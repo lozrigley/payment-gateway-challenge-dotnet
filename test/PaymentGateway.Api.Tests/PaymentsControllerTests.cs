@@ -152,6 +152,5 @@ public class PaymentsControllerTests
         
         //Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
     }
 }
