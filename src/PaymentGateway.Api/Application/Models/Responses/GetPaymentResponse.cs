@@ -1,4 +1,6 @@
-﻿namespace PaymentGateway.Api.Models.Responses;
+﻿using PaymentGateway.Api.Application.Enums;
+
+namespace PaymentGateway.Api.Application.Models.Responses;
 
 public class GetPaymentResponse
 {
