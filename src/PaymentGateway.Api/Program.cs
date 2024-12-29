@@ -1,4 +1,6 @@
-using PaymentGateway.Api.Domain.Services;
+using Microsoft.AspNetCore.Mvc;
+
+using PaymentGateway.Api.Domain.Repositories;
 using PaymentGateway.Api.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IPaymentRepository, PaymentsRepository>();
+// builder.Services.Configure<ApiBehaviorOptions>(options =>
+// {
+//     options.SuppressModelStateInvalidFilter = true;
+// });
 
 var app = builder.Build();
 
@@ -21,7 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
