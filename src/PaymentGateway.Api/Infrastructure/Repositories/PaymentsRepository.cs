@@ -1,19 +1,22 @@
-﻿using PaymentGateway.Api.Application.Models.Responses;
+﻿using System.Collections.Concurrent;
+
+using PaymentGateway.Api.Application.Models.Responses;
 using PaymentGateway.Api.Domain.Repositories;
 
 namespace PaymentGateway.Api.Infrastructure.Repositories;
 
 public class PaymentsRepository : IPaymentRepository
 {
-    public List<PostPaymentResponse> Payments = new();
-    
-    public void Add(PostPaymentResponse payment)
+    //private for encapsulation and Concurrent bag for thread safety
+    private readonly ConcurrentBag<Payment?> _payments = new();
+
+    public void Add(Payment payment)
     {
-        Payments.Add(payment);
+        _payments.Add(payment);
     }
 
-    public PostPaymentResponse Get(Guid id)
+    public Payment? Get(Guid id)
     {
-        return Payments.FirstOrDefault(p => p.Id == id);
+        return _payments?.FirstOrDefault(p => p?.Id == id);
     }
 }
