@@ -8,14 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 using PaymentGateway.Api.Application.Controllers;
 using PaymentGateway.Api.Domain;
-using PaymentGateway.Api.Application.Models.Responses;
 using PaymentGateway.Api.Domain.Repositories;
 using PaymentGateway.Api.Infrastructure.Repositories;
 using FluentAssertions;
 using FluentAssertions.Execution;
-
-using Microsoft.AspNetCore.TestHost;
-
 using PaymentGateway.Api.Infrastructure.Services;
 
 namespace PaymentGateway.Api.Tests;
@@ -109,8 +105,6 @@ public class PaymentsControllerTests
         
         //Act
         var response = await client.PostAsJsonAsync($"/api/Payments", request);
-        
-        var responseBody = await response.Content.ReadAsStringAsync();
         
         //Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);

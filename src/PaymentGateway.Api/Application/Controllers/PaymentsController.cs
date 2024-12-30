@@ -64,7 +64,6 @@ public class PaymentsController(IPaymentRepository paymentsRepository) : Control
             {
                 message = "An unexpected downstream error occurred while processing the request."
             }));
-        return await Task.FromResult(Ok());
     }
 }
 

@@ -12,7 +12,7 @@ public class PostPaymentRequest
     [MinLength(14, ErrorMessage = "Card number must be at least 14 characters long.")]
     [MaxLength(19, ErrorMessage = "Card number must not exceed 19 characters.")]
     [RegularExpression("^[0-9]+$", ErrorMessage = "Card number must only contain numeric characters.")]
-    public string CardNumber { get; set; }
+    public string CardNumber { get; set; } = null!;
 
     [Required(ErrorMessage = "Expiry month is required.")]
     [Range(1, 12, ErrorMessage = "Expiry month must be between 1 and 12.")]
@@ -25,7 +25,7 @@ public class PostPaymentRequest
     [Required(ErrorMessage = "Currency is required.")]
     [StringLength(3, MinimumLength = 3, ErrorMessage = "Currency code must be exactly 3 characters.")]
     [CustomValidation(typeof(PostPaymentRequest), nameof(ValidateCurrencyCode))]
-    public string Currency { get; set; }
+    public string Currency { get; set; } = null!;
 
     [Required(ErrorMessage = "Amount is required.")]
     [Range(1, int.MaxValue, ErrorMessage = "Amount must be a positive integer.")]
@@ -57,7 +57,7 @@ public class PostPaymentRequest
             return new ValidationResult("The expiry date must be in the future.");
         }
 
-        return ValidationResult.Success;
+        return ValidationResult.Success!;
     }
 
     public static ValidationResult ValidateCurrencyCode(string currencyCode, ValidationContext context)

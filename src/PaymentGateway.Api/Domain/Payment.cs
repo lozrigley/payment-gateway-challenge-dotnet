@@ -28,6 +28,3 @@ public enum PaymentStatus
     Declined
 }
 
-public record Success(Payment Payment);
-
-public record Error();
