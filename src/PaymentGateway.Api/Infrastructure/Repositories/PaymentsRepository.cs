@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 
 using PaymentGateway.Api.Application.Models.Responses;
+using PaymentGateway.Api.Domain;
 using PaymentGateway.Api.Domain.Repositories;
 
 namespace PaymentGateway.Api.Infrastructure.Repositories;
