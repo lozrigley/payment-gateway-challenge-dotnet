@@ -78,7 +78,7 @@ public class PaymentsControllerTests
     [InlineData("Amount", "0")]
     [InlineData("Amount", "-10")]
     
-    public async Task PostAnInvalidPaymentReturns400WithErrorMessage(string property, string invalidOverride)
+    public async Task PostAnInvalidPaymentWithIncorrectPropertyValuesReturns400(string property, string invalidOverride)
     {
         // Arrange
         var webApplicationFactory = new WebApplicationFactory<PaymentsController>();
@@ -108,7 +108,6 @@ public class PaymentsControllerTests
         
         //Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-
     }
     
     [Theory]
@@ -152,5 +151,45 @@ public class PaymentsControllerTests
         
         //Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+    
+    [Theory]
+    [InlineData("Cvv")]
+    [InlineData("CardNumber")]
+    [InlineData("ExpiryMonth")]
+    [InlineData("ExpiryYear")]
+    [InlineData("Currency")]
+    [InlineData("Amount")]
+    
+    public async Task PostAnInvalidWithMissingRequiredFieldsPaymentReturns400(string propertyToRemove)
+    {
+        // Arrange
+        var webApplicationFactory = new WebApplicationFactory<PaymentsController>();
+        var client = webApplicationFactory.CreateClient();
+        string json = $@"                      {{
+                          ""CardNumber"": ""1234567812345678"",
+                          ""ExpiryMonth"": 12,
+                          ""ExpiryYear"": {DateTime.Now.Year + 2},
+                          ""Cvv"": ""123"",
+                          ""Currency"": ""GBP"",
+                          ""Amount"": 100
+                      }}";
+        
+        var request = JsonNode.Parse(json);
+        
+        if (request?[propertyToRemove] is not null)
+        {
+            ((JsonObject)request).Remove(propertyToRemove);
+        }
+        else
+        {
+            throw new ArgumentException("Test did not override value as expected");
+        }
+        
+        //Act
+        var response = await client.PostAsJsonAsync($"/api/Payments", request);
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 }
